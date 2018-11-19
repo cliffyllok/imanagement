@@ -1,6 +1,7 @@
 # test-project
 
-> A Vue.js project
+> This project is a work-in-progress project at its beginning stage.
+> It is not intended to be used at this stage.
 
 ## Build Setup
 
