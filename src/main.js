@@ -8,6 +8,7 @@ import format from "date-fns/format";
 import VuejsDialog from "vuejs-dialog";
 import CmpAlert from "./components/shared/Alert.vue";
 import Parse from "parse";
+import * as firebase from "firebase";
 
 Vue.component("app-alert", CmpAlert);
 
@@ -62,15 +63,13 @@ new Vue({
   router,
   render: h => h(App),
   created() {
-    const config = {
-      // your firebase config here
-    };
-
-    firebase.initializeApp(config);
+    // const config = {
+    //   // your firebase config here
+    // };
 
     if (this.$store.state.user === null) {
       console.log("not logged in");
-      this.$router.push("/signin");
+      this.$router.push("/signIn");
     }
   }
 });

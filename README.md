@@ -1,10 +1,11 @@
 # test-project
 
-> A Vue.js project
+> This project is a work-in-progress project at its beginning stage.
+> It is not intended to be used on any environment at this stage.
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 

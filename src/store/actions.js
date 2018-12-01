@@ -1,16 +1,24 @@
 import * as firebase from "firebase";
+import Parse from "parse";
 import router from "../router/index";
 
 export const signIn = ({ commit, dispatch }, user) => {
+  console.log("action: signIn");
   commit("setLoading", true);
-  firebase
-    .auth()
-    .signInWithEmailAndPassword(user.email, user.password)
+  Parse.User.logIn(user.email, user.password)
     .then(user => {
       commit("clearError");
+
+      console.log(
+        "User logged in successful with username: " +
+          user.get("username") +
+          " and email: " +
+          user.get("email")
+      );
       dispatch("getUserInfo", user.uid);
     })
     .catch(error => {
+      console.log("login error");
       commit("setLoading", false);
       commit("setError", error.message);
     });

@@ -16,6 +16,7 @@
       <v-layout v-else row class="mt-3 mb-5">
         <v-flex xs8 offset-xs2>
           <h3>{{ today | formatDateFull }}</h3>
+          <h2>Hello my friend</h2>
         </v-flex>
       </v-layout>
       <v-card>
