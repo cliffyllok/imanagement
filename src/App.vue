@@ -14,6 +14,7 @@
         >
           <v-btn flat class="white--text ml-0">Sell By Date Demo</v-btn>
         </router-link>
+
         <v-btn v-else flat class="white--text ml-0">Sell By Date Demo</v-btn>
       </v-toolbar-title>
 
@@ -70,6 +71,7 @@ export default {
         this.$store.state.user.authLevel === "1" &&
         this.$store.state.products.length > 0
       ) {
+        console.log("user valid");
         menuItems = [
           { icon: "home", title: "Check in", link: "/itemCheckIn" },
           { icon: "view_list", title: "Products", link: "/products" },
@@ -77,23 +79,28 @@ export default {
           { icon: "supervisor_account", title: "Users", link: "/users" }
         ];
       } else {
-        this.$router.replace("/signin");
+        console.log("routing to signin from App");
+        this.$router.replace("/signIn");
       }
 
       return menuItems;
     },
     userIsAuthenticated() {
+      console.log("auth");
       return this.$store.state.user;
     },
     user() {
+      console.log("get user App");
       return this.$store.state.user;
     },
     hideNav() {
+      console.log("App: hideNav");
       return this.$store.state.hideNav;
     }
   },
   methods: {
     logOut() {
+      console.log("App: logout");
       this.$store.commit("clearAll");
     }
   }

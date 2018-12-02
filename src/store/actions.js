@@ -25,6 +25,7 @@ export const signIn = ({ commit, dispatch }, user) => {
 };
 
 export const getUserInfo = ({ commit, dispatch }, userId) => {
+  console.log("get user info");
   firebase
     .database()
     .ref("users")
@@ -41,6 +42,7 @@ export const getUserInfo = ({ commit, dispatch }, userId) => {
 };
 
 export const loadUsers = ({ commit }) => {
+  console.log("load user from db");
   firebase
     .database()
     .ref("users")
@@ -65,6 +67,7 @@ export const loadUsers = ({ commit }) => {
 };
 
 export const loadProducts = ({ commit, state }) => {
+  console.log("load products");
   firebase
     .database()
     .ref("products")
@@ -139,6 +142,7 @@ export const loadProducts = ({ commit, state }) => {
 };
 
 export const signUp = ({ commit, dispatch }, newUser) => {
+  console.log("action: signup");
   commit("setLoading", true);
   firebase
     .auth()
@@ -161,6 +165,7 @@ export const signUp = ({ commit, dispatch }, newUser) => {
 };
 
 export const addNewUser = ({ commit, dispatch }, currUser) => {
+  console.log("action: addnewuser");
   firebase
     .database()
     .ref("users")
@@ -177,6 +182,7 @@ export const addNewUser = ({ commit, dispatch }, currUser) => {
 };
 
 export const editUser = ({ commit }, user) => {
+  console.log("action: edit user");
   firebase
     .database()
     .ref("users")
@@ -206,6 +212,7 @@ export const addNewItem = ({ commit, dispatch }, newItem) => {
 };
 
 export const editItem = ({ commit, dispatch }, item) => {
+  console.log("action: edit item");
   firebase
     .database()
     .ref("products")
@@ -219,6 +226,7 @@ export const editItem = ({ commit, dispatch }, item) => {
 };
 
 export const reorderItem = ({ commit, dispatch }, reorderedItem) => {
+  console.log("action: reorder Item");
   firebase
     .database()
     .ref("products")
@@ -232,6 +240,7 @@ export const reorderItem = ({ commit, dispatch }, reorderedItem) => {
 };
 
 export const setLoadedScancode = ({ commit, state }, objItem) => {
+  console.log("action: setLoadedScancode");
   if (objItem.scancodeFound) {
     commit("setMessage", "Item found. Enter new Sell By date.");
     let product = state.products.find(el => el.scancode === objItem.sc);
@@ -245,6 +254,7 @@ export const setLoadedScancode = ({ commit, state }, objItem) => {
 };
 
 export const addOrder = ({ commit, state, dispatch }, objItem) => {
+  console.log("action: addOrder");
   if (objItem.scancodeFound) {
     let product = state.products.find(el => el.scancode === objItem.sc);
     let objItemRestock = { itemId: product.id, action: "add" };
@@ -260,6 +270,7 @@ export const addOrder = ({ commit, state, dispatch }, objItem) => {
 };
 
 export const setRestockStatus = ({ commit, dispatch }, objItemRestock) => {
+  console.log("action: setRestockStatus");
   commit("setLoading", true);
   let entryRef = firebase
     .database()
@@ -279,6 +290,7 @@ export const setRestockStatus = ({ commit, dispatch }, objItemRestock) => {
 };
 
 export const clearRestockList = ({ commit, dispatch, getters }) => {
+  console.log("action: clearREstocklist");
   commit("setLoading", true);
   getters.reorderedItems.forEach(el => {
     let itemId = el.id;

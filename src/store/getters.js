@@ -2,6 +2,7 @@ import isWithinRange from "date-fns/is_within_range";
 import { addDays, addMonths } from "date-fns";
 
 export const products = state => {
+  console.log("getter products");
   let arrProducts = state.products.filter(el => {
     return el.reorderDate === "";
   });
@@ -9,6 +10,7 @@ export const products = state => {
 };
 
 export const getSellBySoon = state => {
+  console.log("getter getsellby soon");
   let tenDaysFromNow = addDays(new Date(), 10);
   let oneWeekAgo = addDays(new Date(), -7);
   let arrSellBySoon = state.products.filter(el => {
@@ -18,6 +20,7 @@ export const getSellBySoon = state => {
 };
 
 export const getSellBySoonMonth = state => {
+  console.log("getter sellBysoon");
   let OneMonthFromNow = addMonths(new Date(), 1);
   let oneWeekAgo = addDays(new Date(), -7);
   let arrSellBySoonMonth = state.products.filter(el => {
@@ -27,6 +30,7 @@ export const getSellBySoonMonth = state => {
 };
 
 export const reorderedItems = state => {
+  console.log("getter reordered");
   let arrReorders = state.products.filter(el => {
     return el.onReorderList === true;
   });
@@ -34,9 +38,11 @@ export const reorderedItems = state => {
 };
 
 export const loadedProduct = state => {
+  console.log("getter loaded product");
   return state.loadedProduct;
 };
 
 export const addItem = state => {
+  console.log("getters additem");
   return state.addItem;
 };

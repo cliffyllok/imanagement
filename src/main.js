@@ -63,12 +63,9 @@ new Vue({
   router,
   render: h => h(App),
   created() {
-    // const config = {
-    //   // your firebase config here
-    // };
-
     if (this.$store.state.user === null) {
       console.log("not logged in");
+      //console.log(this.$store);
       this.$router.push("/signIn");
     }
   }

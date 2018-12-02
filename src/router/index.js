@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 Vue.use(Router);
 
+import MainPage from "../components/MainPage";
 import Products from "../components/Products.vue";
 import ProductsSellBy from "../components/ProductsSellBy.vue";
 import ItemCheckIn from "../components/ItemCheckIn";
@@ -17,7 +18,7 @@ import Reorders from "../components/Reorders";
 export default new Router({
   mode: "history",
   routes: [
-    { path: "/", component: ItemCheckIn },
+    { path: "/", component: MainPage },
     { path: "/editItem", component: editItem, name: "editItem", props: true },
     {
       path: "/duplicateItem",
