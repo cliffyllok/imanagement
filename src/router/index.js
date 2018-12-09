@@ -14,6 +14,7 @@ import Users from "../components/Users";
 import editUser from "../components/editUser";
 import DuplicateItem from "../components/DuplicateItem";
 import Reorders from "../components/Reorders";
+import BulkInput from "../components/BulkInput";
 
 export default new Router({
   mode: "history",
@@ -34,6 +35,7 @@ export default new Router({
     { path: "/signUp", component: SignUp },
     { path: "/users", component: Users },
     { path: "/reorders", component: Reorders },
-    { path: "/editUser", component: editUser, name: "editUser", props: true }
+    { path: "/editUser", component: editUser, name: "editUser", props: true },
+    { path: "/bulkInput", component: BulkInput }
   ]
 });

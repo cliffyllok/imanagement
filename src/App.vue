@@ -80,7 +80,8 @@ export default {
         ];
       } else {
         console.log("routing to signin from App");
-        this.$router.replace("/signIn");
+        //this.$router.replace("/signIn");
+        this.$router.replace("/BulkInput");
       }
 
       return menuItems;
