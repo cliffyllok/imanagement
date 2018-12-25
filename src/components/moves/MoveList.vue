@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="stock-move-list">
+    <div id="stock-move-list" class="stock-move-list">
       <table id="StockTable" class="table table-hover table-striped sortable">
         <thead>
           <tr>
@@ -283,7 +283,8 @@ i.icons-delete {
   display: block;
   width: 100%;
 }
-.stock-move-list {
+div#stock-move-list {
+  width: 100%;
   display: inline-block;
   overflow: scroll;
 }
