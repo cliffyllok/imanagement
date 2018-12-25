@@ -14,7 +14,7 @@ import Users from "../components/Users";
 import editUser from "../components/editUser";
 import DuplicateItem from "../components/DuplicateItem";
 import Reorders from "../components/Reorders";
-import BulkInput from "../components/BulkInput";
+import BulkInput from "../components/moves/MoveList";
 
 export default new Router({
   mode: "history",

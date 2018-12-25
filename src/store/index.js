@@ -1,18 +1,26 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import * as getters from "./getters";
-import * as actions from "./actions";
-import * as mutations from "./mutations";
 import format from "date-fns/format";
 import addWeeks from "date-fns/add_weeks";
+// import inventory from "./module/Inventory/index";
+// import stockMovements from "./module/StockMovements/index";
+// import login from "./module/Login/index";
+import { mutations } from "./mutations";
+import { actions } from "./actions";
+import getters from "./getters";
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
+  // modules: {
+  //   login: login,
+  //   stockMove: stockMovements,
+  //   stock: inventory
+  // },
   state: {
     loading: false,
     user: null,
-    products: [],
+    stockMovements: null,
     loadedProduct: null,
     loadedUsers: [],
     fbError: "",

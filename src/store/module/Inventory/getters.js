@@ -1,16 +1,6 @@
 import isWithinRange from "date-fns/is_within_range";
 import { addDays, addMonths } from "date-fns";
 
-/* for movement event of stock */
-export const stockMovements = state => {
-  console.log("getter stockMove");
-  let arrMoves = state.stockMovements.filter(el => {
-    return el.productName === "";
-  });
-  return arrMoves;
-};
-/* END for movement event of stock */
-
 export const products = state => {
   console.log("getter products");
   let arrProducts = state.products.filter(el => {

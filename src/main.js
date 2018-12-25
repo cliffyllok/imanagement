@@ -9,8 +9,11 @@ import VuejsDialog from "vuejs-dialog";
 import CmpAlert from "./components/shared/Alert.vue";
 import Parse from "parse";
 import * as firebase from "firebase";
+import ToggleButton from "vue-js-toggle-button";
 
 Vue.component("app-alert", CmpAlert);
+
+Vue.use(ToggleButton);
 
 Vue.use(Vuetify, {
   theme: {
@@ -63,11 +66,12 @@ new Vue({
   router,
   render: h => h(App),
   created() {
+    console.log("Initial main.js");
     if (this.$store.state.user === null) {
       console.log("not logged in");
       //console.log(this.$store);
       //this.$router.push("/signIn");
-      //this.$router.push("/bulkInput");
+      this.$router.push("/bulkInput");
     }
   }
 });
