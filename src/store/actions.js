@@ -1,10 +1,251 @@
 import * as firebase from "firebase";
-import Parse from "parse";
+
 import { parseOp } from "../services/parseOp";
 import router from "../router/index";
 import { StockMove } from "../models/stockMovements";
 import { STOCKMOVEMENTS } from "../models/stockMovementColMapping";
+import { STOCK } from "../models/stockColMapping";
+import { STORELOCA } from "../models/storeLocationColMapping";
+
+function moveObjToModel(moves) {
+  const items = [];
+  let objectId = "";
+  let moveId = "";
+  let eventDate = new Date();
+  let productName = "";
+  let inOut = false;
+  let marketPrice = 0;
+  let buyingPrice = 0;
+  let packing = "";
+  let remarks = "";
+  let quantity = 0;
+  let source = null;
+  let destination = null;
+  // standardize each item with elements of the legacy db
+
+  Object.keys(moves).forEach(key => {
+    console.log(key);
+    console.log("Show objid");
+    console.log(moves[key].id);
+    moves[key].id === undefined
+      ? (objectId = null)
+      : (objectId = moves[key].id);
+
+    moves[key].moveId === undefined
+      ? (moveId = null)
+      : (moveId = moves[key].moveId);
+
+    moves[key].get(StockMove.EventDate) === undefined
+      ? (eventDate = new Date())
+      : (eventDate = moves[key].get(STOCKMOVEMENTS.EventDate));
+
+    moves[key].get(STOCKMOVEMENTS.ProductName) === undefined
+      ? (productName = "")
+      : (productName = moves[key].get(STOCKMOVEMENTS.ProductName));
+    moves[key].get(STOCKMOVEMENTS.InOut) === undefined
+      ? (inOut = true)
+      : (inOut = moves[key].get(STOCKMOVEMENTS.InOut));
+
+    // fill all blank sellBy dates for date sorting...these will still show as blank on products pages
+    moves[key].get(STOCKMOVEMENTS.MarketPrice) === undefined
+      ? (marketPrice = 0)
+      : (marketPrice = moves[key].get(STOCKMOVEMENTS.MarketPrice));
+
+    moves[key].get(STOCKMOVEMENTS.BuyingPrice) === undefined
+      ? (buyingPrice = 0)
+      : (buyingPrice = moves[key].get(STOCKMOVEMENTS.BuyingPrice));
+    moves[key].get(STOCKMOVEMENTS.Packing) === undefined
+      ? (packing = "")
+      : (packing = moves[key].get(STOCKMOVEMENTS.Packing));
+    moves[key].get(STOCKMOVEMENTS.Remarks) === undefined
+      ? (remarks = "")
+      : (remarks = moves[key].get(STOCKMOVEMENTS.Remarks));
+    moves[key].get(STOCKMOVEMENTS.Quantity) === undefined
+      ? (quantity = 0)
+      : (quantity = moves[key].get(STOCKMOVEMENTS.Quantity));
+
+    moves[key].get(STOCKMOVEMENTS.source) === undefined
+      ? (source = null)
+      : (source = moves[key].get(STOCKMOVEMENTS.source));
+    moves[key].get(STOCKMOVEMENTS.destination) === undefined
+      ? (destination = null)
+      : (destination = moves[key].get(STOCKMOVEMENTS.destination));
+
+    items.push({
+      objectId: objectId,
+      moveId: moveId,
+      productName: productName,
+      eventDate: eventDate,
+      inOut: inOut,
+      packing: packing,
+      marketPrice: marketPrice,
+      buyingPrice: buyingPrice,
+      remarks: remarks,
+      quantity: quantity,
+      source: source.get("name"),
+      destination: destination.get("name")
+    });
+  });
+  console.log("mapped items");
+  console.log(JSON.stringify(items));
+  return items;
+}
+function storeLocationToModel(storeLoca) {
+  const items = [];
+  let objectId = "";
+  let sectionCode = "";
+  let sectionName = "";
+  let location = "";
+  let name = "";
+  let locationCode = "";
+  let sectionId = 0;
+  // standardize each item with elements of the legacy db
+  console.log("convert stroe location");
+  console.log(storeLoca);
+  Object.keys(storeLoca).forEach(key => {
+    console.log(key + " store lcoation");
+    console.log(storeLoca[key].id);
+    storeLoca[key].id === undefined
+      ? (objectId = "")
+      : (objectId = storeLoca[key].id);
+    console.log(key + " store lcoation");
+    console.log(storeLoca[key].get("sectionId"));
+    storeLoca[key].get(STORELOCA.sectionId) === undefined
+      ? (sectionId = "")
+      : (sectionId = storeLoca[key].get(STORELOCA.sectionId));
+
+    console.log(key + " store lcoation");
+    storeLoca[key].get(STORELOCA.sectionCode) === undefined
+      ? (sectionCode = new Date())
+      : (sectionCode = storeLoca[key].get(STORELOCA.sectionCode));
+
+    console.log(key + " store lcoation");
+    storeLoca[key].get(STORELOCA.sectionName) === undefined
+      ? (sectionName = "")
+      : (sectionName = storeLoca[key].get(STORELOCA.sectionName));
+    storeLoca[key].get(STORELOCA.location) === undefined
+      ? (location = "")
+      : (location = storeLoca[key].get(STORELOCA.location));
+
+    console.log(key + " store lcoation");
+    storeLoca[key].get(STORELOCA.name) === undefined
+      ? (name = "")
+      : (name = storeLoca[key].get(STORELOCA.name));
+
+    storeLoca[key].get(STORELOCA.locationCode) === undefined
+      ? (locationCode = 0)
+      : (locationCode = storeLoca[key].get(STORELOCA.locationCode));
+
+    console.log("first store lcoation");
+    console.log(storeLoca[key]);
+    items.push({
+      objectId: objectId,
+      sectionId: sectionId,
+      sectionName: sectionName,
+      sectionCode: sectionCode,
+      location: location,
+      locationCode: locationCode,
+      name: name
+    });
+  });
+  console.log("mapped locations");
+  console.log(JSON.stringify(items));
+  return items;
+}
+function stockObjToModel(stock) {
+  const items = [];
+  let objectId = "";
+  let stockId = "";
+  let asOfDate = new Date();
+  let product = "";
+  let marketPrice = 0;
+  let averageBuyingPrice = 0;
+  let packing = "";
+  let quantity = 0;
+  let storeLocation = "";
+  let section = "";
+  // standardize each item with elements of the legacy db
+
+  Object.keys(stock).forEach(key => {
+    console.log(key);
+    console.log("Show objid");
+    console.log(stock[key].id);
+    stock[key].id === undefined
+      ? (objectId = null)
+      : (objectId = stock[key].id);
+
+    stock[key].stockId === undefined
+      ? (stockId = null)
+      : (stockId = stock[key].stockId);
+
+    stock[key].get(STOCK.product) === undefined
+      ? (product = "")
+      : (product = stock[key].get(STOCK.product));
+
+    stock[key].get(STOCK.asOfDate) === undefined
+      ? (asOfDate = new Date())
+      : (asOfDate = stock[key].get(STOCK.asOfDate));
+
+    // fill all blank sellBy dates for date sorting...these will still show as blank on products pages
+    stock[key].get(STOCK.marketPrice) === undefined
+      ? (marketPrice = 0)
+      : (marketPrice = stock[key].get(STOCK.marketPrice));
+
+    stock[key].get(STOCK.averageBuyingPrice) === undefined
+      ? (averageBuyingPrice = 0)
+      : (averageBuyingPrice = stock[key].get(STOCK.averageBuyingPrice));
+    stock[key].get(STOCK.packing) === undefined
+      ? (packing = "")
+      : (packing = stock[key].get(STOCK.packing));
+    stock[key].get(STOCK.quantity) === undefined
+      ? (quantity = 0)
+      : (quantity = stock[key].get(STOCK.quantity));
+    stock[key].get(STOCK.storeLocation) === undefined
+      ? (storeLocation = "")
+      : (storeLocation = stock[key].get(STOCK.storeLocation));
+    stock[key].get(STOCK.section) === undefined
+      ? (section = 0)
+      : (section = stock[key].get(STOCK.section));
+
+    items.push({
+      objectId: objectId,
+      stockId: stockId,
+      product: product,
+      asOfDate: asOfDate,
+      packing: packing,
+      marketPrice: marketPrice,
+      averageBuyingPrice: averageBuyingPrice,
+      quantity: quantity,
+      storeLocation: storeLocation,
+      section: section
+    });
+    console.log("items");
+    console.log(JSON.stringify(items));
+  });
+  return items;
+}
+async function getAllCurrentStock() {
+  let stock = await parseOp.getAllUpdatedStock();
+  console.log("get all stock");
+  let items = stockObjToModel(stock);
+  return items;
+}
+async function getAllStoreLocations() {
+  let storeLoca = await parseOp.getAllStoreLocations();
+
+  let items = storeLocationToModel(storeLoca);
+  return items;
+}
+async function getAllCurrentMove() {
+  console.log("action load all stock move");
+
+  let moves = await parseOp.getAllCurrentMove();
+  let items = moveObjToModel(moves);
+  return items;
+}
+
 export const actions = {
+  ///////Start StockMovements ///////////
   ADD_STOCKMOVES: async ({ commit, state }) => {
     console.log("Add moves");
     let newMove = new StockMove();
@@ -18,9 +259,9 @@ export const actions = {
     console.log("Update moves");
     console.log(value);
     let updatedItem = await parseOp.updateRow("StockMovements", value);
-    console.log("return from parseOp");
+    console.log("update moves return from parseOp");
     console.log(updatedItem);
-    value.objectId = updatedItem.objectId;
+    value.objectId = updatedItem.id;
 
     await commit("UPDATE_SINGLE_STOCK_MOVEMENT", value);
   },
@@ -30,82 +271,191 @@ export const actions = {
 
     await commit("DELETE_STOCK_MOVEMENT", value);
   },
+  LOAD_ALL_STORE_LOCATION: async ({ commit, state }) => {
+    console.log("load store locations");
+
+    const items = await getAllStoreLocations();
+    console.log("store locations returned");
+    console.log(JSON.stringify(items));
+    await commit("UPDATE_STORE_LOCATION", items);
+  },
+
   LOAD_ALL_STOCKMOVES: async ({ commit, state }) => {
     console.log("action load all movements");
 
-    let moves = await parseOp.getAll("StockMovements");
-    console.log("get all returning");
+    // let moves = await parseOp.getAll("StockMovements");
+    // console.log("get all returning");
 
-    const items = [];
-    let objectId = "";
-    let eventDate = new Date();
-    let productName = "";
-    let inOut = false;
-    let marketPrice = 0;
-    let buyingPrice = 0;
-    let packing = "";
-    let remarks = "";
-    let quantity = 0;
+    const items = await getAllCurrentMove();
+    // let objectId = "";
+    // let moveId = "";
+    // let eventDate = new Date();
+    // let productName = "";
+    // let inOut = false;
+    // let marketPrice = 0;
+    // let buyingPrice = 0;
+    // let packing = "";
+    // let remarks = "";
+    // let quantity = 0;
     // standardize each item with elements of the legacy db
 
-    Object.keys(moves).forEach(key => {
-      console.log(key);
-      console.log("Show objid");
-      console.log(moves[key]);
-      moves[key].id === undefined
-        ? (objectId = null)
-        : (objectId = moves[key].id);
+    // Object.keys(moves).forEach(key => {
+    //   console.log(key);
+    //   console.log("Show objid");
+    //   console.log(moves[key].id);
+    //   moves[key].id === undefined
+    //     ? (objectId = null)
+    //     : (objectId = moves[key].id);
 
-      moves[key].get(StockMove.EventDate) === undefined
-        ? (eventDate = new Date())
-        : (eventDate = moves[key].get(STOCKMOVEMENTS.EventDate));
+    //   moves[key].moveId === undefined
+    //     ? (moveId = null)
+    //     : (moveId = moves[key].moveId);
 
-      moves[key].get(STOCKMOVEMENTS.ProductName) === undefined
-        ? (productName = "")
-        : (productName = moves[key].get(STOCKMOVEMENTS.ProductName));
-      moves[key].get(STOCKMOVEMENTS.InOut) === undefined
-        ? (inOut = false)
-        : (inOut = moves[key].get(STOCKMOVEMENTS.InOut));
+    //   moves[key].get(StockMove.EventDate) === undefined
+    //     ? (eventDate = new Date())
+    //     : (eventDate = moves[key].get(STOCKMOVEMENTS.EventDate));
 
-      // fill all blank sellBy dates for date sorting...these will still show as blank on products pages
-      moves[key].get(STOCKMOVEMENTS.MarketPrice) === undefined
-        ? (marketPrice = 0)
-        : (marketPrice = moves[key].get(STOCKMOVEMENTS.MarketPrice));
+    //   moves[key].get(STOCKMOVEMENTS.ProductName) === undefined
+    //     ? (productName = "")
+    //     : (productName = moves[key].get(STOCKMOVEMENTS.ProductName));
+    //   moves[key].get(STOCKMOVEMENTS.InOut) === undefined
+    //     ? (inOut = true)
+    //     : (inOut = moves[key].get(STOCKMOVEMENTS.InOut));
 
-      moves[key].get(STOCKMOVEMENTS.BuyingPrice) === undefined
-        ? (buyingPrice = 0)
-        : (buyingPrice = moves[key].get(STOCKMOVEMENTS.BuyingPrice));
-      moves[key].get(STOCKMOVEMENTS.Packing) === undefined
-        ? (packing = "")
-        : (packing = moves[key].get(STOCKMOVEMENTS.Packing));
-      moves[key].get(STOCKMOVEMENTS.Remarks) === undefined
-        ? (remarks = "")
-        : (remarks = moves[key].get(STOCKMOVEMENTS.Remarks));
-      moves[key].get(STOCKMOVEMENTS.Quantity) === undefined
-        ? (quantity = 0)
-        : (quantity = moves[key].get(STOCKMOVEMENTS.Quantity));
+    //   // fill all blank sellBy dates for date sorting...these will still show as blank on products pages
+    //   moves[key].get(STOCKMOVEMENTS.MarketPrice) === undefined
+    //     ? (marketPrice = 0)
+    //     : (marketPrice = moves[key].get(STOCKMOVEMENTS.MarketPrice));
 
-      items.push({
-        objectId: objectId,
-        productName: productName,
-        eventDate: eventDate,
-        inOut: inOut,
-        packing: packing,
-        marketPrice: marketPrice,
-        buyingPrice: buyingPrice,
-        remarks: remarks,
-        quantity: quantity
-      });
-      console.log("items");
-      console.log(JSON.stringify(items));
-    });
+    //   moves[key].get(STOCKMOVEMENTS.BuyingPrice) === undefined
+    //     ? (buyingPrice = 0)
+    //     : (buyingPrice = moves[key].get(STOCKMOVEMENTS.BuyingPrice));
+    //   moves[key].get(STOCKMOVEMENTS.Packing) === undefined
+    //     ? (packing = "")
+    //     : (packing = moves[key].get(STOCKMOVEMENTS.Packing));
+    //   moves[key].get(STOCKMOVEMENTS.Remarks) === undefined
+    //     ? (remarks = "")
+    //     : (remarks = moves[key].get(STOCKMOVEMENTS.Remarks));
+    //   moves[key].get(STOCKMOVEMENTS.Quantity) === undefined
+    //     ? (quantity = 0)
+    //     : (quantity = moves[key].get(STOCKMOVEMENTS.Quantity));
+
+    // items.push({
+    //   objectId: objectId,
+    //   moveId: moveId,
+    //   productName: productName,
+    //   eventDate: eventDate,
+    //   inOut: inOut,
+    //   packing: packing,
+    //   marketPrice: marketPrice,
+    //   buyingPrice: buyingPrice,
+    //   remarks: remarks,
+    //   quantity: quantity
+    // });
+    console.log("items");
+    console.log(JSON.stringify(items));
+    console.log(JSON.stringify(items[0].destination));
+    // });
 
     await commit("UPDATE_STOCK_MOVEMENT", items);
     // if (state.loc !== "/") {
     //   router.push(state.loc);
     // }
+  },
+  ///////End StockMovements ///////////
+  ///////Start StockList ///////////
+  // LOAD_ALL_STOCK: async ({ commit, state }) => {
+  //   console.log("action load all movements");
+
+  //   let stock = await parseOp.getAll("Stock");
+
+  //   let stockMoves = await parseOp.getAll("StockMovements", "isLocked", false);
+  //   console.log("get all stock");
+
+  //   const items = [];
+  //   let objectId = "";
+  //   let stockId = "";
+  //   let asOfDate = new Date();
+  //   let product = "";
+  //   let marketPrice = 0;
+  //   let averageBuyingPrice = 0;
+  //   let packing = "";
+  //   let quantity = 0;
+  //   let storeLocation = "";
+  //   let section = "";
+  //   // standardize each item with elements of the legacy db
+
+  //   Object.keys(stock).forEach(key => {
+  //     console.log(key);
+  //     console.log("Show objid");
+  //     console.log(stock[key].id);
+  //     stock[key].id === undefined
+  //       ? (objectId = null)
+  //       : (objectId = stock[key].id);
+
+  //     stock[key].stockId === undefined
+  //       ? (stockId = null)
+  //       : (stockId = stock[key].stockId);
+
+  //     stock[key].get(StockMove.asOfDate) === undefined
+  //       ? (asOfDate = new Date())
+  //       : (asOfDate = stock[key].get(STOCK.asOfDate));
+
+  //     stock[key].get(STOCK.product) === undefined
+  //       ? (product = "")
+  //       : (product = stock[key].get(STOCK.product));
+
+  //     // fill all blank sellBy dates for date sorting...these will still show as blank on products pages
+  //     stock[key].get(STOCK.marketPrice) === undefined
+  //       ? (marketPrice = 0)
+  //       : (marketPrice = stock[key].get(STOCK.marketPrice));
+
+  //     stock[key].get(STOCK.averageBuyingPrice) === undefined
+  //       ? (averageBuyingPrice = 0)
+  //       : (averageBuyingPrice = stock[key].get(STOCK.averageBuyingPrice));
+  //     stock[key].get(STOCK.packing) === undefined
+  //       ? (packing = "")
+  //       : (packing = stock[key].get(STOCK.packing));
+  //     stock[key].get(STOCK.quantity) === undefined
+  //       ? (quantity = 0)
+  //       : (quantity = stock[key].get(STOCK.quantity));
+  //     stock[key].get(STOCK.storeLocation) === undefined
+  //       ? (storeLocation = "")
+  //       : (storeLocation = stock[key].get(STOCK.storeLocation));
+  //     stock[key].get(STOCK.section) === undefined
+  //       ? (section = 0)
+  //       : (section = stock[key].get(STOCK.section));
+
+  //     items.push({
+  //       objectId: objectId,
+  //       stockId: stockId,
+  //       product: product,
+  //       asOfDate: asOfDate,
+  //       packing: packing,
+  //       marketPrice: marketPrice,
+  //       averageBuyingPrice: averageBuyingPrice,
+  //       quantity: quantity,
+  //       storeLocation: storeLocation,
+  //       section: section
+  //     });
+  //     console.log("items");
+  //     console.log(JSON.stringify(items));
+  //   });
+
+  //   await commit("UPDATE_STOCK", items);
+  //   // if (state.loc !== "/") {
+  //   //   router.push(state.loc);
+  //   // }
+  // }
+  LOAD_ALL_STOCK: async ({ commit, state }) => {
+    getAllCurrentMove;
+    await commit("UPDATE_STOCK", items);
+    // if (state.loc !== "/") {
+    //   router.push(state.loc);
+    // }
   }
 };
+///////End StockList ///////////
 
 export const signIn = ({ commit, dispatch }, user) => {
   console.log("action: signIn");

@@ -14,6 +14,10 @@ export const mutations = {
     console.log(JSON.stringify(items));
     state.stockMovements = items;
   },
+  UPDATE_STORE_LOCATION: (state, items) => {
+    console.log("mutate update store Location");
+    state.storeLoca = items;
+  },
   UPDATE_SINGLE_STOCK_MOVEMENT: (state, item) => {
     console.log("mutate single stockMovements");
     let index = 0;
@@ -38,6 +42,13 @@ export const mutations = {
     console.log(JSON.stringify(state));
     console.log(JSON.stringify(item));
     state.stockMovements.splice(state.stockMovements.indexOf(item), 1);
+  },
+
+  UPDATE_STOCK: (state, items) => {
+    console.log("mutate stockMovements");
+    console.log(JSON.stringify(state));
+    console.log(JSON.stringify(items));
+    state.stockList = items;
   }
 };
 

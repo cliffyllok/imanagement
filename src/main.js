@@ -67,11 +67,11 @@ new Vue({
   render: h => h(App),
   created() {
     console.log("Initial main.js");
-    if (this.$store.state.user === null) {
-      console.log("not logged in");
-      //console.log(this.$store);
-      //this.$router.push("/signIn");
-      this.$router.push("/bulkInput");
-    }
+    // if (this.$store.state.user === null) {
+    //   console.log("not logged in");
+    //   //console.log(this.$store);
+    //   //this.$router.push("/signIn");
+    //   this.$router.push("/StockList");
+    // }
   }
 });

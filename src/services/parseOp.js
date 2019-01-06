@@ -52,28 +52,9 @@ export const parseOp = {
     let query = new Parse.Query(objName);
     let ret = null;
     if (colName) {
-      console.log("Find single obj");
       query.equalTo(colName, matchValue);
 
-      ret = await query.first({
-        success: function(obj) {
-          if (obj) {
-            console.log(
-              "Obj found successful with name: " +
-                obj.get("ProductName") +
-                " and quantity: " +
-                obj.get("quantity")
-            );
-          } else {
-            console.log("Nothing found, please try again");
-          }
-          return obj;
-        },
-        error: function(error) {
-          console.log("Error: " + error.code + " " + error.message);
-          return null;
-        }
-      });
+      ret = await query.find();
     } else {
       console.log("Find all obj");
       ret = await query.find();
@@ -132,6 +113,58 @@ export const parseOp = {
         console.log("error");
         console.log("Error: " + error.code + " " + error.message);
       });
+  },
+  getAllCurrentMove: async () => {
+    let objName = "StockMovements";
+    let ret = null;
+
+    let lockQuery = new Parse.Query(objName);
+    lockQuery.equalTo("isLocked", false);
+    let processQuery = new Parse.Query(objName);
+    processQuery.equalTo("hasProcessed", false);
+
+    let validQuery = Parse.Query.and(lockQuery, processQuery);
+    validQuery.include("source");
+    validQuery.include("destination");
+    ret = await validQuery.find();
+    console.log("getting valid and current stockmovements");
+    return ret;
+  },
+  getAllUpdatedStock: async () => {
+    let objName = "Stock";
+    let ret = null;
+
+    let isCurQuery = new Parse.Query(objName);
+    isCurQuery.equalTo("isCurrent", true);
+
+    ret = await isCurQuery.find();
+    console.log("getting valid and current stockmovements");
+    return ret;
+  },
+  getAllStoreLocations: async () => {
+    let objName = "StoragePoint";
+    let ret = null;
+
+    let isCurQuery = new Parse.Query(objName);
+
+    ret = await isCurQuery.find();
+    console.log("get all storagepoint");
+    console.log(JSON.stringify(ret));
+    return ret;
+  },
+  getAllVisibleStock: async () => {
+    let objName = "Stock";
+    let ret = null;
+
+    let isCurQuery = new Parse.Query(objName);
+    isCurQuery.equalTo("isCurrent", true);
+    let isVisibleQuery = new Parse.Query(objName);
+    isVisibleQuery.equalTo("isVisible", true);
+
+    let validQuery = Parse.Query.and(isCurQuery, isVisibleQuery);
+    ret = await validQuery.find();
+    console.log("getting valid and current stock");
+    return ret;
   },
   updateRow: async (objName, updatedObj) => {
     let query = new Parse.Query(objName);

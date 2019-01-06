@@ -1,5 +1,5 @@
 export const STOCKMOVEMENTS = {
-  ObjectId: "id",
+  ObjectId: "objectId",
   moveId: "moveId",
   EventDate: "EventDate",
   ProductName: "ProductName",
@@ -8,5 +8,7 @@ export const STOCKMOVEMENTS = {
   BuyingPrice: "BuyingPrice",
   Quantity: "quantity",
   Packing: "Packaging",
-  Remarks: "Remarks"
+  Remarks: "Remarks",
+  source: "source",
+  destination: "destination"
 };

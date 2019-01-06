@@ -12,10 +12,10 @@
           tag="span"
           style="cursor: pointer"
         >
-          <v-btn flat class="white--text ml-0">Sell By Date Demo</v-btn>
+          <v-btn flat class="white--text ml-0">Inventory Management</v-btn>
         </router-link>
 
-        <v-btn v-else flat class="white--text ml-0">Sell By Date Demo</v-btn>
+        <v-btn v-else flat class="white--text ml-0">Inventory Management</v-btn>
       </v-toolbar-title>
 
       <v-spacer />
@@ -81,7 +81,7 @@ export default {
       } else {
         console.log("routing to signin from App");
         //this.$router.replace("/signIn");
-        this.$router.replace("/BulkInput");
+        //this.$router.replace("/StockList");
       }
 
       return menuItems;

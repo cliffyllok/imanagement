@@ -35,6 +35,8 @@
             <th>In/Out</th>
             <th>Expired By</th>
             <th>Used By</th>
+            <th>Source</th>
+            <th>Destination</th>
             <th>Store Location</th>
             <th>Store Section</th>
             <th>Special Requirements</th>
@@ -121,6 +123,20 @@
             <td><datepicker :value="row.expiredby"></datepicker></td>
             <!-- Used by -->
             <td><datepicker :value="row.usedby"></datepicker></td>
+            <!-- Source -->
+            <v-select
+              label="name"
+              :options="storeLocations"
+              :value="row.source"
+            ></v-select>
+            <!-- Destination -->
+            <td>
+              <v-select
+                label="name"
+                :options="storeLocations"
+                :value="row.destination"
+              ></v-select>
+            </td>
             <!-- Store location -->
             <td><input type="text" v-model="row.storelocation" /></td>
             <!-- Store Section -->
@@ -153,22 +169,45 @@
         </tbody>
       </table>
     </div>
+    <div class="modal-dialog-pane">
+      <modalpopup
+        v-if="showModal"
+        @continue="
+          showModal = false;
+          isContinue = true;
+        "
+        @cancel="
+          showModal = false;
+          isContinue = false;
+        "
+      >
+        <!--
+          you can use custom content here to overwrite
+          default content
+        -->
+      </modalpopup>
+    </div>
   </div>
 </template>
 
 <script>
 import Datepicker from "vuejs-datepicker";
-
+import ModalPopup from "../shared/Popup";
+import vselect from "vue-select";
 export default {
-  name: "MoveManage",
+  name: "MoveManager",
   components: {
-    datepicker: Datepicker
+    datepicker: Datepicker,
+    modalpopup: ModalPopup,
+    "v-select": vselect
   },
   data() {
     console.log("getting data");
     return {
       saveData: null,
-      rownum: 1
+      rownum: 1,
+      showModal: false,
+      isContinue: false
     };
   },
   computed: {
@@ -178,12 +217,20 @@ export default {
         if (!this.$store.state.stockMovements) {
           console.log("stockeMovements is undefined");
           this.initData();
-          return [];
         }
         return this.$store.state.stockMovements;
       },
       set(value) {
         this.updateData();
+      }
+    },
+    storeLocations: {
+      get() {
+        if (!this.$store.state.storeLoca) {
+          console.log("store location not defined");
+          this.initData();
+        }
+        return this.$store.state.storeLoca;
       }
     }
   },
@@ -205,6 +252,7 @@ export default {
       console.log("initData");
 
       let result = await this.$store.dispatch("LOAD_ALL_STOCKMOVES");
+      let storeLoca = await this.$store.dispatch("LOAD_ALL_STORE_LOCATION");
       // .then(data => {
       //   console.log(data);
       // })
@@ -212,8 +260,8 @@ export default {
       //   console.log("error");
       //   console.log(err);
       // });
-      console.log(JSON.stringify(result));
-      console.log(JSON.stringify(this.$store.state.stockMovements));
+      console.log("movelist storeloca");
+      console.log(this.$store.state.storeLoca);
     },
     updateData: async function() {
       console.log("updateData");
@@ -235,8 +283,21 @@ export default {
       // this.$router.push("/bulkInput");
     },
     removeRow: function(row) {
-      //console.log(row);
-      this.$store.dispatch("DELETE_STOCKMOVES", row);
+      // //console.log(row);
+      // this.showModal = true;
+      // console.log("try to delete row" + this.showModal);
+      // //wait for modal dialog to close
+      // while (this.showModal) {
+      //   this.showModal = false;
+      // }
+      // if (this.isContinue) {
+      //   this.$store.dispatch("DELETE_STOCKMOVES", row);
+      //   this.isContinue = false;
+      // }
+      let isContinue = confirm("Are you sure you want to delete this row?");
+      if (isContinue) {
+        this.$store.dispatch("DELETE_STOCKMOVES", row);
+      }
     }
   }
 };
@@ -255,6 +316,10 @@ tbody tr:nth-child(even) {
 }
 tbody tr:nth-child(odd) {
   background-color: #b8ccd1;
+}
+.btn {
+  padding: 8px;
+  cursor: pointer;
 }
 div.btn-in-table {
   display: contents;
@@ -286,6 +351,6 @@ i.icons-delete {
 div#stock-move-list {
   width: 100%;
   display: inline-block;
-  overflow: scroll;
+  overflow: auto;
 }
 </style>
