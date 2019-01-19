@@ -5,5 +5,6 @@ export const STORELOCA = {
   sectionName: "sectionName",
   location: "location",
   name: "name",
-  locationCode: "locationCode"
+  locationCode: "locationCode",
+  storageType: "storageType"
 };

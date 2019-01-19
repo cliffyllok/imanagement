@@ -14,6 +14,10 @@ export const mutations = {
     console.log(JSON.stringify(items));
     state.stockMovements = items;
   },
+  UPDATE_ALL_MOVES: (state, items) => {
+    console.log("mutate allMoves");
+    state.allMoves = items;
+  },
   UPDATE_STORE_LOCATION: (state, items) => {
     console.log("mutate update store Location");
     state.storeLoca = items;

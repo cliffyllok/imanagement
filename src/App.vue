@@ -15,7 +15,9 @@
           <v-btn flat class="white--text ml-0">Inventory Management</v-btn>
         </router-link>
 
-        <v-btn v-else flat class="white--text ml-0">Inventory Management</v-btn>
+        <v-btn v-else flat class="white--text ml-0"
+          >Inventory Managements</v-btn
+        >
       </v-toolbar-title>
 
       <v-spacer />
@@ -66,17 +68,18 @@ export default {
     menuItems() {
       let menuItems = [];
 
-      if (
-        this.$store.state.user &&
-        this.$store.state.user.authLevel === "1" &&
-        this.$store.state.products.length > 0
-      ) {
+      // if (
+      //   this.$store.state.user &&
+      //   this.$store.state.user.authLevel === "1" &&
+      //   this.$store.state.products.length > 0
+      // ) {
+      //used to bypass sign-in
+      if (true) {
         console.log("user valid");
         menuItems = [
-          { icon: "home", title: "Check in", link: "/itemCheckIn" },
-          { icon: "view_list", title: "Products", link: "/products" },
-          { icon: "note_add", title: "Add Item", link: "/addNewItem" },
-          { icon: "supervisor_account", title: "Users", link: "/users" }
+          { icon: "home", title: "Home", link: "/StockList" },
+          { icon: "view_list", title: "Stock", link: "/StockList" },
+          { icon: "note_add", title: "Add Move", link: "/MoveList" }
         ];
       } else {
         console.log("routing to signin from App");

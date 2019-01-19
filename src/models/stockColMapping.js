@@ -9,5 +9,6 @@ export const STOCK = {
   packing: "packing",
   remarks: "remarks",
   section: "section",
-  storeLocation: "storeLocation"
+  storeLocation: "storeLocation",
+  buyingPrice: "buyingPrice"
 };

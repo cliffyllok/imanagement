@@ -9,6 +9,8 @@ export class StockMove {
   quantity = 0;
   packing = "";
   remarks = "";
+  hasProcessed = false;
+  isLocked = false;
 
   construct(data) {
     console.log("creating new stockMove");
@@ -51,6 +53,8 @@ export class StockMove {
     }
     this.packing = !data || !data.Packing ? null : data.Packing;
     this.remarks = !data || !data.Remarks ? "" : data.Remarks;
+    this.hasProcessed = false;
+    this.isLocked = false;
   }
 
   // and so on, put other methods here

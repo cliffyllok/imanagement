@@ -1,53 +1,44 @@
 <script>
 import Datepicker from "vuejs-datepicker";
+import vselect from "vue-select";
 
 export default {
   name: "StockManager",
   components: {
-    datepicker: Datepicker
+    datepicker: Datepicker,
+    "v-select": vselect
   },
   data() {
-    console.log("getting data");
     return {
-      saveData: null,
-      rownum: 1,
-      showModal: false,
-      isContinue: false
+      periodOptions: [
+        "SelectDate",
+        "Latest month",
+        "past 3 months",
+        "past 6 months",
+        "past year"
+      ],
+      selectedPeriod: 0,
+      selectedDate: new Date()
     };
   },
   computed: {
     rows: {
       get() {
-        console.log("getting stock rows");
-        if (!this.$store.state.stockList) {
-          console.log("stockeList is undefined");
+        console.log("getting moves rows");
+        if (!this.$store.state.allMoves) {
+          console.log("moves List is undefined");
           this.initData();
         }
-        return this.$store.state.stockList;
-      },
-      set(value) {
-        this.updateData(value);
+        return this.$store.state.allMoves;
       }
     }
   },
-  props: {
-    myOptions: {
-      type: Boolean,
-      default: false
-    }
-  },
+  props: {},
   methods: {
-    getObj: function() {
-      console.log(JSON.stringify(this.$store.state.stockList));
-      return this.$store.state.stockList;
-    },
-    updateRow: function(value) {
-      this.$store.dispatch("UPDATE_STOCK", value);
-    },
     initData: async function() {
       console.log("getting stock data");
 
-      let result = await this.$store.dispatch("LOAD_ALL_STOCK");
+      let result = await this.$store.dispatch("LOAD_ALL_STOCKMOVES");
       // .then(data => {
       //   console.log(data);
       // })
@@ -56,24 +47,45 @@ export default {
       //   console.log(err);
       // });
       console.log(JSON.stringify(result));
-      console.log(JSON.stringify(this.$store.state.stockList));
-    },
-    updateData: async function(value) {
-      console.log("updateData");
-      this.$store.state.stockList = value;
-      this.rows = this.$store.state.stockList;
+      console.log(JSON.stringify(this.$store.state.allMoves));
     }
   }
 };
 </script>
 
 <template>
-  <div id="StockList" class="subjects-content">
-    <h3 class="subjects-trimester-title">Inventory Management System</h3>
-    <h4 class="subjects-trimester-title">Stock</h4>
+  <div id="Report" class="subjects-content">
+    <h3 class="subjects-trimester-title">Transaction report</h3>
+    <h4 class="subjects-trimester-title">Transactions</h4>
 
-    <div id="stock-move-list" class="stock-move-list">
-      <table id="StockTable" class="table table-hover table-striped sortable">
+    <div class="list-op-row">
+      <div class="list-op-pane">
+        Period: &nbsp;
+        <v-select
+          class="periodSelect"
+          label="name"
+          :options="periodOptions"
+          v-model="selectedPeriod"
+        ></v-select>
+        <div class="rangePicker">
+          <datepicker
+            class="periodRangePickStart"
+            :value="selectedDate"
+          ></datepicker>
+          <span class="dateSeparator">-</span>
+          <datepicker
+            class="periodRangePickEnd"
+            :value="selectedDate"
+          ></datepicker>
+        </div>
+      </div>
+    </div>
+
+    <div id="transaction-list" class="stock-move-list">
+      <table
+        id="TransactionTable"
+        class="table table-hover table-striped sortable"
+      >
         <thead>
           <tr>
             <th>Product</th>
@@ -92,7 +104,7 @@ export default {
           <tr v-for="row in rows">
             <td>
               <!-- Product -->
-              <span class="table-cell-text">{{ row.product }}</span>
+              <span class="table-cell-text">{{ row.productName }}</span>
             </td>
             <td>
               <!-- Packing -->
@@ -133,6 +145,24 @@ export default {
 </template>
 
 <style>
+.periodSelect {
+  min-width: 200px;
+}
+.rangePicker {
+  float: left;
+}
+.dateSeparator {
+  float: left;
+}
+.periodRangePickEnd {
+  width: 30%;
+  float: left;
+}
+.periodRangePickStart {
+  width: 30%;
+  float: left;
+}
+
 .textboxCT {
   text-align: center;
 }

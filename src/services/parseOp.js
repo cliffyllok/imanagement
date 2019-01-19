@@ -14,15 +14,41 @@ async function update(objToUpdate, updateSource) {
     objToUpdate = new StockMovements();
     console.log(objToUpdate);
   }
+  console.log(updateSource["source"]);
   console.log("update field " + updateSource["productName"]);
   objToUpdate.set("EventDate", updateSource["eventDate"]);
   objToUpdate.set("ProductName", updateSource["productName"]);
   objToUpdate.set("InOut", updateSource["inOut"]);
   objToUpdate.set("MarketPrice", updateSource["marketPrice"]);
   objToUpdate.set("BuyingPrice", updateSource["buyingPrice"]);
+
+  let srcLoca = new Parse.Object("StoragePoint");
+  srcLoca.id = updateSource["source"] ? updateSource["source"].objectId : null;
+  console.log(updateSource["source"]);
+  console.log(updateSource["source"].storageType);
+  console.log(srcLoca.id);
+
+  objToUpdate.set("source", srcLoca);
+
+  let destLoca = new Parse.Object("StoragePoint");
+  console.log("updating destination");
+  console.log(updateSource["destination"]);
+  console.log(updateSource["destination"].storageType);
+  destLoca.id = updateSource["destination"]
+    ? updateSource["destination"].objectId
+    : null;
+  // destLoca.id = "eKSa4JJtC6";
+  console.log(destLoca);
+
+  objToUpdate.set("destination", destLoca);
   objToUpdate.set("quantity", updateSource["quantity"]);
-  objToUpdate.set("Packaging", updateSource["packaging"]);
+  objToUpdate.set("Packaging", updateSource["packing"]);
   objToUpdate.set("Remarks", updateSource["remarks"]);
+
+  objToUpdate.set("moveId", updateSource["moveId"]);
+  objToUpdate.set("hasProcessed", updateSource["hasProcessed"]);
+  objToUpdate.set("isLocked", updateSource["isLocked"]);
+
   console.log("updateing object");
   console.log(objToUpdate);
   return await objToUpdate.save(null, {
@@ -127,7 +153,27 @@ export const parseOp = {
     validQuery.include("source");
     validQuery.include("destination");
     ret = await validQuery.find();
+
+    console.log(JSON.stringify(ret));
+
     console.log("getting valid and current stockmovements");
+    console.log(ret);
+    return ret;
+  },
+  getAllMoves: async () => {
+    let objName = "StockMovements";
+    let ret = null;
+
+    let getAllQuery = new Parse.Query(objName);
+
+    getAllQuery.include("source");
+    getAllQuery.include("destination");
+    ret = await getAllQuery.find();
+
+    console.log(JSON.stringify(ret));
+
+    console.log("getting all stockmovements");
+    console.log(ret);
     return ret;
   },
   getAllUpdatedStock: async () => {
@@ -218,7 +264,8 @@ export const parseOp = {
   addRow: async (objName, value) => {
     // let obj = Parse.Object.extend(objName);
     // let newobj = Object.create(obj.prototype);
-
+    console.log("adding row");
+    console.log(value);
     let newobj = this.cloneObject(value);
     console.log(newobj);
     newobj.save(null, {

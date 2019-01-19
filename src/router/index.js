@@ -16,6 +16,7 @@ import DuplicateItem from "../components/DuplicateItem";
 import Reorders from "../components/Reorders";
 import MoveList from "../components/moves/MoveList";
 import StockList from "../components/stock/StockList";
+import Report from "../components/reports/Report";
 
 export default new Router({
   mode: "history",
@@ -38,6 +39,7 @@ export default new Router({
     { path: "/reorders", component: Reorders },
     { path: "/editUser", component: editUser, name: "editUser", props: true },
     { path: "/MoveList", component: MoveList },
-    { path: "/StockList", component: StockList }
+    { path: "/StockList", component: StockList },
+    { path: "/Report", component: Report }
   ]
 });

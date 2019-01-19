@@ -21,6 +21,7 @@ export const store = new Vuex.Store({
     loading: false,
     user: null,
     stockMovements: null,
+    allMoves: null,
     stockList: null,
     storeLoca: null,
     loadedProducts: null,
