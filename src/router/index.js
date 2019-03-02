@@ -21,7 +21,7 @@ import Report from "../components/reports/Report";
 export default new Router({
   mode: "history",
   routes: [
-    { path: "/", component: MainPage },
+    { path: "/", component: StockList },
     { path: "/editItem", component: editItem, name: "editItem", props: true },
     {
       path: "/duplicateItem",

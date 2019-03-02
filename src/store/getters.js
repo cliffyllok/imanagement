@@ -1,5 +1,27 @@
 import isWithinRange from "date-fns/is_within_range";
-import { addDays, addMonths } from "date-fns";
+
+export const getters = {
+  movesByDate: state => {
+    console.log("get move by date");
+    //return a function pointer so the calller can pass parameters
+
+    return (startDate, endDate) => {
+      if (!startDate) {
+        startDate = new Date(-8640000000000000);
+      }
+      if (!endDate) {
+        endDate = new Date(8640000000000000);
+      }
+      let parts = startDate.split("-");
+      startDate = new Date(parts[0], parts[1] - 1, parts[2]);
+      parts = endDate.split("-");
+      endDate = new Date(parts[0], parts[1] - 1, parts[2]);
+      return state.allMoves.filter(el => {
+        return isWithinRange(el.eventDate, startDate, endDate);
+      });
+    };
+  }
+};
 
 /* for movement event of stock */
 export const stockMovements = state => {

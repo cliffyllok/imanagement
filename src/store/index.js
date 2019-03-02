@@ -7,7 +7,7 @@ import addWeeks from "date-fns/add_weeks";
 // import login from "./module/Login/index";
 import { mutations } from "./mutations";
 import { actions } from "./actions";
-import getters from "./getters";
+import { getters } from "./getters";
 
 Vue.use(Vuex);
 

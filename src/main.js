@@ -10,8 +10,11 @@ import CmpAlert from "./components/shared/Alert.vue";
 import Parse from "parse";
 import * as firebase from "firebase";
 import ToggleButton from "vue-js-toggle-button";
+import i18n from "@/services/i18n";
 
 Vue.component("app-alert", CmpAlert);
+
+Vue.config.productionTip = false;
 
 Vue.use(ToggleButton);
 
@@ -62,6 +65,7 @@ Vue.filter("formatDateShort", function(value) {
 
 new Vue({
   el: "#app",
+  i18n,
   store,
   router,
   render: h => h(App),

@@ -33,10 +33,11 @@ function moveObjToModel(moves) {
       ? (moveId = null)
       : (moveId = moves[key].moveId);
 
-    moves[key].get(StockMove.EventDate) === undefined
+    moves[key].get(STOCKMOVEMENTS.EventDate) === undefined
       ? (eventDate = new Date())
       : (eventDate = moves[key].get(STOCKMOVEMENTS.EventDate));
-
+    console.log("-------------------------");
+    console.log(eventDate);
     moves[key].get(STOCKMOVEMENTS.ProductName) === undefined
       ? (productName = "")
       : (productName = moves[key].get(STOCKMOVEMENTS.ProductName));

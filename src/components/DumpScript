@@ -1,3 +1,63 @@
+
+
+<thead>
+  <tr>
+    <th>Product</th>
+    <th>Packing</th>
+    <th>market Price</th>
+    <th>Average Buying Price</th>
+    <th>Profit Margin</th>
+    <th>Quantity</th>
+    <th>Total Value</th>
+    <th>Store Location</th>
+    <th>Store Section</th>
+  </tr>
+</thead>
+
+  <tbody>
+    <tr v-for="row in rows">
+      <td>
+        <!-- Product -->
+              <span class="table-cell-text">{{ row.productName }}</span>
+      </td>
+      <td>
+        <!-- Packing -->
+              <span class="table-cell-text">{{ row.packing }} </span>
+      </td>
+      <td>
+        <!-- Market Price -->
+              <span class="table-cell-text">{{ row.marketPrice }} </span>
+      </td>
+      <td>
+        <!-- Buying Price -->
+              <span class="table-cell-text">{{ row.buyingPrice }}</span>
+      </td>
+      <td>
+        <!-- Profit Margin -->
+              <span class="table-cell-text">{{ row.margin }}</span>
+      </td>
+      <td>
+        <!-- Quantity -->
+              <span class="table-cell-text">{{ row.quantity }}</span>
+      </td>
+      <td>
+        <span class="table-cell-text">{{ row.totalValue }} </span>
+      </td>
+
+      <td>
+        <span class="table-cell-text">{{ row.storeLocation }}</span>
+      </td>
+      <!-- Store Section -->
+            <td>
+        <span class="table-cell-text">{{ row.storeSection }}</span>
+      </td>
+    </tr>
+  </tbody>
+
+
+
+
+
 <section class="content" id="evaluate" style="background-color:#fff; padding-bottom:50px;" v-cloak>
   <form action="{{  url('/test') }}" method="post">
     <div class="subjects-content">
