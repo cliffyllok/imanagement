@@ -69,22 +69,22 @@ export default {
 
 <template>
   <div id="StockList" class="subjects-content">
-    <h3 class="subjects-trimester-title">Inventory Management System</h3>
-    <h4 class="subjects-trimester-title">Stock</h4>
+    <h3 class="subjects-trimester-title">{{ $t("appName") }}</h3>
+    <h4 class="subjects-trimester-title">{{ $t("stock") }}</h4>
 
     <div id="stock-move-list" class="stock-move-list">
       <table id="StockTable" class="table table-hover table-striped sortable">
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Packing</th>
-            <th>market Price</th>
-            <th>Average Buying Price</th>
-            <th>Profit Margin</th>
-            <th>Quantity</th>
-            <th>Total Value</th>
-            <th>Store Location</th>
-            <th>Store Section</th>
+            <th>{{ $t("productName") }}</th>
+            <th>{{ $t("packing") }}</th>
+            <th>{{ $t("marketPrice") }}</th></th>
+            <th>{{ $t("avgBuyingPrice") }}</th>
+            <th>{{ $t("profitMargin") }}</th>
+            <th>{{ $t("quantity") }}</th>
+            <th>{{ $t("totalValue") }}</th>
+            <th>{{ $t("storeLocation") }}</th>
+            <th>{{ $t("storeSection") }}</th>
           </tr>
         </thead>
 
@@ -136,7 +136,9 @@ export default {
 .textboxCT {
   text-align: center;
 }
-
+th {
+  color: white;
+}
 thead tr:first-child {
   background-color: #256d7b;
 }

@@ -10,11 +10,21 @@ import CmpAlert from "./components/shared/Alert.vue";
 import Parse from "parse";
 import * as firebase from "firebase";
 import ToggleButton from "vue-js-toggle-button";
-import i18n from "@/services/i18n";
+import { messages } from "@/services/i18n-translate";
+import VueI18n from "vue-i18n";
+import FlagIcon from "vue-flag-icon";
+import i18n from "./plugins/i18n";
+
+Vue.use(FlagIcon);
+//Vue.use(VueI18n);
+
+// export const i18n = new VueI18n({
+//   locale: "en", // set locale
+//   fallbackLocale: "cn", // set fallback locale
+//   messages: messages // set locale messages
+// });
 
 Vue.component("app-alert", CmpAlert);
-
-Vue.config.productionTip = false;
 
 Vue.use(ToggleButton);
 
@@ -64,8 +74,8 @@ Vue.filter("formatDateShort", function(value) {
 });
 
 new Vue({
-  el: "#app",
   i18n,
+  el: "#app",
   store,
   router,
   render: h => h(App),

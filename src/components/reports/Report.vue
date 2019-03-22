@@ -29,7 +29,7 @@ export default {
       selectedDate: new Date(),
       columns: [
         {
-          label: "Product",
+          label: this.$t("productName"),
           field: "productName",
           filterOptions: {
             enabled: true, // enable filter for this column
@@ -41,31 +41,31 @@ export default {
           }
         },
         {
-          label: "Packing",
+          label: this.$t("packing"),
           field: "packing"
         },
         {
-          label: "Market Price",
+          label: this.$t("marketPrice"),
           field: "marketPrice",
           type: "number"
         },
         {
-          label: "Buying Price",
+          label: this.$t("buyingPrice"),
           field: "buyingPrice",
           type: "number"
         },
         {
-          label: "Profit Margin",
+          label: this.$t("profitMargin"),
           field: "profit",
           type: "number"
         },
         {
-          label: "Quantity",
+          label: this.$t("quantity"),
           field: "qunatity",
           type: "number"
         },
         {
-          label: "Total Value",
+          label: this.$t("totalValue"),
           field: "totalValue",
           type: "number"
         }
@@ -130,12 +130,14 @@ export default {
 <!-- *************TEMPLATE SESSION****************** -->
 <template>
   <div id="Report" class="subjects-content">
-    <h3 class="subjects-trimester-title">Transaction report</h3>
-    <h4 class="subjects-trimester-title">Transactions</h4>
+    <h3 class="subjects-trimester-title">{{ $t("transactionReport") }}</h3>
+    <h4 class="subjects-trimester-title">{{ $t("transaction") }}</h4>
 
     <div class="list-op-row">
       <div class="list-op-pane">
-        <div class="list-op-range-lable col-sm-3">Period: &nbsp;</div>
+        <div class="list-op-range-lable col-sm-3">
+          {{ $t("period") }}: &nbsp;
+        </div>
         <div class="rangePicker ">
           <div class="startDate-picker col-sm-5">
             <v-flex date-picker xs11 sm5>
@@ -168,14 +170,14 @@ export default {
                   @input="menuStart = false;"
                 >
                   <v-spacer></v-spacer>
-                  <v-btn flat color="primary" @click="menu = false;"
-                    >Cancel</v-btn
-                  >
+                  <v-btn flat color="primary" @click="menu = false;">{{
+                    $t("cancel")
+                  }}</v-btn>
                   <v-btn
                     flat
                     color="primary"
                     @click="$refs.menu.save(startDate);"
-                    >OK</v-btn
+                    >{{ $t("ok") }}</v-btn
                   >
                 </v-date-picker>
               </v-menu>

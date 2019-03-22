@@ -1,3 +1,67 @@
+<script>
+import i18n from "./plugins/i18n";
+export default {
+  data() {
+    return {
+      sidebar: false,
+      mini: false,
+      right: null,
+      languages: [
+        { flag: "us", language: "en", title: "English" },
+        { flag: "cn", language: "cn", title: "中文" }
+      ]
+    };
+  },
+  computed: {
+    menuItems() {
+      let menuItems = [];
+
+      // if (
+      //   this.$store.state.user &&
+      //   this.$store.state.user.authLevel === "1" &&
+      //   this.$store.state.products.length > 0
+      // ) {
+      //used to bypass sign-in
+      if (true) {
+        console.log("user valid");
+        menuItems = [
+          { icon: "home", title: this.$t("home"), link: "/Report" },
+          { icon: "view_list", title: this.$t("stock"), link: "/StockList" },
+          { icon: "note_add", title: this.$t("addMove"), link: "/MoveList" }
+        ];
+      } else {
+        console.log("routing to signin from App");
+        //this.$router.replace("/signIn");
+        //this.$router.replace("/StockList");
+      }
+
+      return menuItems;
+    },
+    userIsAuthenticated() {
+      console.log("auth");
+      return this.$store.state.user;
+    },
+    user() {
+      console.log("get user App");
+      return this.$store.state.user;
+    },
+    hideNav() {
+      console.log("App: hideNav");
+      return this.$store.state.hideNav;
+    }
+  },
+  methods: {
+    logOut() {
+      console.log("App: logout");
+      this.$store.commit("clearAll");
+    },
+    changeLocale(locale) {
+      i18n.locale = locale;
+    }
+  }
+};
+</script>
+
 <template>
   <v-app>
     <div :class="{ leftpanel: sidebar }">
@@ -9,7 +73,7 @@
         :close-on-click="false"
       >
         <div class="header-sidebar ">
-          <v-btn class="sidebar-button">Inventory Management</v-btn>
+          <v-btn class="sidebar-button">{{ $t("appName") }}</v-btn>
         </div>
         <v-sidebar-item
           v-for="item in this.menuItems"
@@ -75,9 +139,9 @@
             <v-btn flat class="white--text ml-0">Inventory Management</v-btn>
           </router-link>
 
-          <v-btn v-else flat class="white--text ml-0"
-            >Inventory Management</v-btn
-          >
+          <v-btn v-else flat class="white--text ml-0">{{
+            $t("appName")
+          }}</v-btn>
         </v-toolbar-title>
 
         <v-spacer />
@@ -92,7 +156,18 @@
           >
             {{ item.title }}
           </v-btn>
-          <v-btn flat class="white--text" @click="logOut"> Log out </v-btn>
+          <v-btn
+            flat
+            class="white--text lang-button"
+            v-for="entry in languages"
+            :key="entry.title"
+            @click="changeLocale(entry.language);"
+          >
+            <flag :iso="entry.flag" v-bind:squared="false" /> {{ entry.title }}
+          </v-btn>
+          <v-btn flat class="white--text" @click="logOut">
+            {{ $t("logout") }}
+          </v-btn>
         </v-toolbar-items>
       </v-toolbar>
 
@@ -103,63 +178,14 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      sidebar: false,
-      mini: false,
-      right: null
-    };
-  },
-  computed: {
-    menuItems() {
-      let menuItems = [];
-
-      // if (
-      //   this.$store.state.user &&
-      //   this.$store.state.user.authLevel === "1" &&
-      //   this.$store.state.products.length > 0
-      // ) {
-      //used to bypass sign-in
-      if (true) {
-        console.log("user valid");
-        menuItems = [
-          { icon: "home", title: "Home", link: "/Report" },
-          { icon: "view_list", title: "Stock", link: "/StockList" },
-          { icon: "note_add", title: "Add Move", link: "/MoveList" }
-        ];
-      } else {
-        console.log("routing to signin from App");
-        //this.$router.replace("/signIn");
-        //this.$router.replace("/StockList");
-      }
-
-      return menuItems;
-    },
-    userIsAuthenticated() {
-      console.log("auth");
-      return this.$store.state.user;
-    },
-    user() {
-      console.log("get user App");
-      return this.$store.state.user;
-    },
-    hideNav() {
-      console.log("App: hideNav");
-      return this.$store.state.hideNav;
-    }
-  },
-  methods: {
-    logOut() {
-      console.log("App: logout");
-      this.$store.commit("clearAll");
-    }
-  }
-};
-</script>
-
 <style scoped>
+.lang-button {
+  padding: 1px;
+  border: 1px solid green;
+  background-color: #2cb337;
+  font-size: 0.8em;
+  margin: 4px;
+}
 .leftpanel {
   height: 100%;
   float: left;

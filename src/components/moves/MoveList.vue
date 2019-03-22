@@ -11,6 +11,8 @@ export default {
   },
   data() {
     console.log("getting data");
+    console.log("this is move list data");
+    console.log(this);
     return {
       saveData: null,
       rownum: 1,
@@ -123,11 +125,11 @@ export default {
 
 <template>
   <div id="MoveList" class="subjects-content">
-    <h3 class="subjects-trimester-title">Inventory Management System</h3>
-    <h4 class="subjects-trimester-title">Movements</h4>
+    <h3 class="subjects-trimester-title">{{ $t("appName") }}</h3>
+    <h4 class="subjects-trimester-title">{{ $t("movements") }}</h4>
     <div class="list-op-row">
       <div class="list-op-pane">
-        Number of Rows: &nbsp;
+        {{ $t("addRowsLabel") }}: &nbsp;
         <input
           v-model.number="rownum"
           type="number"
@@ -149,21 +151,21 @@ export default {
       <table id="StockTable" class="table table-hover table-striped sortable">
         <thead>
           <tr>
-            <th>Event Date</th>
-            <th>Product Name</th>
-            <th>Packing</th>
-            <th>Market Price</th>
-            <th>Buying Price</th>
-            <th>Quantity</th>
-            <th>In/Out</th>
-            <th>Expired By</th>
-            <th>Used By</th>
-            <th>Source</th>
-            <th>Destination</th>
-            <th>Store Location</th>
-            <th>Store Section</th>
-            <th>Special Requirements</th>
-            <th>Remarks</th>
+            <th>{{ $t("eventDate") }}</th>
+            <th>{{ $t("productName") }}</th>
+            <th>{{ $t("packing") }}</th>
+            <th>{{ $t("marketPrice") }}</th>
+            <th>{{ $t("buyingPrice") }}</th>
+            <th>{{ $t("quantity") }}</th>
+            <th>{{ $t("inout") }}</th>
+            <th>{{ $t("expireby") }}</th>
+            <th>{{ $t("usedby") }}</th>
+            <th>{{ $t("source") }}</th>
+            <th>{{ $t("destination") }}</th>
+            <th>{{ $t("storeLocation") }}</th>
+            <th>{{ $t("storeSection") }}</th>
+            <th>{{ $t("specialRequirements") }}</th>
+            <th>{{ $t("remarks") }}</th>
             <th></th>
           </tr>
         </thead>
@@ -319,6 +321,9 @@ export default {
   text-align: center;
 }
 
+th {
+  color: white;
+}
 thead tr:first-child {
   background-color: #256d7b;
 }
