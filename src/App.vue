@@ -12,6 +12,9 @@ export default {
       ]
     };
   },
+  created(){
+    i18n.locale = "us";
+  },
   computed: {
     menuItems() {
       let menuItems = [];
